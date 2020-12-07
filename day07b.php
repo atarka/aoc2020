@@ -9,8 +9,8 @@
         }, $m[2]);
     }, file_get_contents('input07.txt'));
 
-    $scan = function ($color, $count, $total) use (&$scan, &$container) {
-        return $count * array_reduce($container[$color]??[], fn($a,$n) => $a + $scan($n->color, $n->count, 1), $total);
+    $scan = function ($color, $count) use (&$scan, &$container) {
+        return $count * array_reduce($container[$color]??[], fn($a, $n) => $a + $scan($n->color, $n->count), 1);
     };
 
-    printf("%d\n", $scan('shiny gold', 1, 0));
+    printf("%d\n", $scan('shiny gold', 1) - 1);
