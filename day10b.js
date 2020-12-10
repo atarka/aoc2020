@@ -1,8 +1,8 @@
 const fs = require('fs');
 const data = fs.readFileSync('input10.txt', { encoding: 'utf8' });
 
-const jolts = [0].concat(data.split(/\r?\n/).map(n => +n).sort((a, b) => a - b));
-jolts.push(jolts[jolts.length - 1] + 3);
+const input = data.split(/\r?\n/).map(n => +n).sort((a, b) => a - b);
+const jolts = [0, ...input, input[input.length - 1] + 3];
 
 const permutations = adapters => {
   const power = 1 << (adapters.length - 2);
@@ -24,7 +24,7 @@ let variants = 1;
 for (let i = 0, l = jolts.length; i < l; ++i) {
   const jolt = jolts[i];
   if (jolt - jolts[i - 1] === 3) { // lets process the subchain for variations
-    variants *= chain.length > 1 ? permutations(chain) : 1;
+    variants *= chain.length > 2 ? permutations(chain) : 1;
     chain.length = 0;
   }
   chain.push(jolt);
