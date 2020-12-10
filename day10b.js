@@ -1,8 +1,8 @@
 const fs = require('fs');
 const data = fs.readFileSync('input10.txt', { encoding: 'utf8' });
 
-let jolts = [0].concat(data.split(/\r?\n/).map(n => +n).sort((a, b) => a - b));
-jolts = jolts.concat(jolts[jolts.length - 1] + 3);
+const jolts = [0].concat(data.split(/\r?\n/).map(n => +n).sort((a, b) => a - b));
+jolts.push(jolts[jolts.length - 1] + 3);
 
 const permutations = adapters => {
   const power = 1 << (adapters.length - 2);
