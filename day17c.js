@@ -6,8 +6,8 @@ const boundaries = [].concat(Array(dimensions).fill([0, 0]));
 let w = world, aw = anotherWorld; // shout out to chahi
 
 const put = (world, coords, v) => {
-  for (let dimension = 0, l = coords.length; dimension < l; ++dimension) {
-    if (dimension === l - 1) {
+  for (let dimension = 0; dimension < dimensions; ++dimension) {
+    if (dimension === dimensions - 1) {
       world[coords[dimension]] = v;
     } else {
       if (!world[coords[dimension]]) world[coords[dimension]] = {};
@@ -35,7 +35,7 @@ const rec = (dimension, coord, callback, from, to) => {
     callback(coord);
   } else for (let i = from(dimension), l = to(dimension); i <= l; ++i) {
     coord[dimension] = i;
-    rec(dimension + 1, coord, endCallback, from, to);
+    rec(dimension + 1, coord, callback, from, to);
   }
 }
 
