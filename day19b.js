@@ -13,8 +13,8 @@ ruleLines[11] = '42 31 | 42 11 31';
 
 const resolvedRules = [];
 const resolveRule = (ruleId, nestedCount = 0) => {
-  if (nestedCount > 10) return '';
   if (!resolvedRules[ruleId]) {
+    if (nestedCount > 10) return '';
     const rule = ruleLines[ruleId];
 
     if (rule.match(/"."/)) {
