@@ -3,11 +3,11 @@ const data = `326519478`;
 
 let cups = data.split('').map(n => +n);
 const totalCups = 1000000;
-let current = cups[0];
+let currentCup = cups[0];
 let start = Math.max(...cups) + 1;
 const minCup = Math.min(...cups);
 for (let i = cups.length; i < totalCups; ++i) cups[i] = start++;
-const list = {};
+const list = new Array(start + totalCups);
 for (let i = 0; i < totalCups; ++i) {
   list[cups[i]] = { v: cups[i], prev: i ? list[cups[i - 1]] : null, next: null };
   if (i) list[cups[i - 1]].next = list[cups[i]];
@@ -16,30 +16,28 @@ list[cups[0]].prev = list[cups[totalCups - 1]];
 list[cups[totalCups - 1]].next = list[cups[0]];
 
 const maxCup = start - 1;
-
-const getList = (start, howMuch) => {
-  const items = [];
-  for (let i = 0; i < howMuch; ++i, start = start.next) items.push(start.v);
-  return items;
-}
+let cup = list[currentCup];
 
 for (let i = 0; i < 10000000; ++i) {
-  const selected = getList(list[current].next, 3)
+  const selected1 = cup.next;
+  const selected2 = selected1.next;
+  const selected3 = selected2.next;
 
-  let destValue = current;
+  let destValue = cup.v;
   do {
     if (--destValue < minCup) destValue = maxCup;
-    if (!selected.includes(destValue)) break;
+    if (destValue !== selected1.v && destValue !== selected2.v && destValue !== selected3.v) break;
   } while (true);
 
+  const dest = list[destValue];
   // lets rewrite references for choppity chop
-  list[current].next = list[selected[2]].next;
-  list[selected[2]].next.prev = list[current];
-  list[selected[0]].prev = list[destValue];
-  list[selected[2]].next = list[destValue].next;
-  list[destValue].next.prev = list[selected[2]];
-  list[destValue].next = list[selected[0]];
-  current = list[current].next.v;
+  cup.next = selected3.next;
+  selected3.next.prev = cup;
+  selected1.prev = dest; // list[destValue];
+  selected3.next = dest.next;
+  dest.next.prev = selected3;
+  dest.next = selected1;
+  cup = cup.next;
 }
 
 console.log(list[1].next.v * list[1].next.next.v);
