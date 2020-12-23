@@ -3,19 +3,18 @@ const data = `326519478`;
 
 let cups = data.split('').map(n => +n);
 const totalCups = 1000000;
-let currentCup = cups[0];
-let start = Math.max(...cups) + 1;
+let maxCup = Math.max(...cups);
 const minCup = Math.min(...cups);
-for (let i = cups.length; i < totalCups; ++i) cups[i] = start++;
-const list = new Array(start + totalCups);
-for (let i = 0; i < totalCups; ++i) {
-  list[cups[i]] = { v: cups[i], next: null };
-  if (i) list[cups[i - 1]].next = list[cups[i]];
-}
-list[cups[totalCups - 1]].next = list[cups[0]];
+const list = new Array(totalCups + maxCup);
 
-const maxCup = start - 1;
-let cup = list[currentCup];
+for (let i = totalCups - 1, oldV = null, v; i >= 0; --i, oldV = v) {
+  v = i < cups.length ? cups[i] : maxCup + i - cups.length + 1;
+  list[v] = { v, next: list[oldV] };
+}
+maxCup += totalCups - cups.length;
+list[maxCup].next = list[cups[0]];
+
+let cup = list[cups[0]];
 
 for (let i = 0; i < 10000000; ++i) {
   const selected1 = cup.next;
@@ -29,7 +28,6 @@ for (let i = 0; i < 10000000; ++i) {
   } while (true);
 
   const dest = list[destValue];
-  // lets rewrite references for choppity chop
   cup.next = selected3.next;
   selected3.next = dest.next;
   dest.next = selected1;
