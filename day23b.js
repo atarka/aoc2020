@@ -33,7 +33,7 @@ for (let i = 0; i < 10000000; ++i) {
   // lets rewrite references for choppity chop
   cup.next = selected3.next;
   selected3.next.prev = cup;
-  selected1.prev = dest; // list[destValue];
+  selected1.prev = dest;
   selected3.next = dest.next;
   dest.next.prev = selected3;
   dest.next = selected1;
