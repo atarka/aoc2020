@@ -9,10 +9,9 @@ const minCup = Math.min(...cups);
 for (let i = cups.length; i < totalCups; ++i) cups[i] = start++;
 const list = new Array(start + totalCups);
 for (let i = 0; i < totalCups; ++i) {
-  list[cups[i]] = { v: cups[i], prev: i ? list[cups[i - 1]] : null, next: null };
+  list[cups[i]] = { v: cups[i], next: null };
   if (i) list[cups[i - 1]].next = list[cups[i]];
 }
-list[cups[0]].prev = list[cups[totalCups - 1]];
 list[cups[totalCups - 1]].next = list[cups[0]];
 
 const maxCup = start - 1;
@@ -32,10 +31,7 @@ for (let i = 0; i < 10000000; ++i) {
   const dest = list[destValue];
   // lets rewrite references for choppity chop
   cup.next = selected3.next;
-  selected3.next.prev = cup;
-  selected1.prev = dest;
   selected3.next = dest.next;
-  dest.next.prev = selected3;
   dest.next = selected1;
   cup = cup.next;
 }
