@@ -7,9 +7,9 @@ let maxCup = Math.max(...cups);
 const minCup = Math.min(...cups);
 const list = new Array(totalCups + maxCup);
 
-for (let i = totalCups - 1, oldV = null, v; i >= 0; --i, oldV = v) {
+for (let i = totalCups - 1, next = null, v; i >= 0; --i, next = list[v]) {
   v = i < cups.length ? cups[i] : maxCup + i - cups.length + 1;
-  list[v] = { v, next: list[oldV] };
+  list[v] = { v, next };
 }
 maxCup += totalCups - cups.length;
 list[maxCup].next = list[cups[0]];
